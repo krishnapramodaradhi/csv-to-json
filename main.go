@@ -29,16 +29,22 @@ func main() {
 	}
 	inputPath = strings.TrimSuffix(inputPath, "\n")
 	inputPath = strings.TrimSuffix(inputPath, "\r")
+	fmt.Print("Output Dir: ")
 	outputPath, err := reader.ReadString('\n')
 	if err != nil {
 		fmt.Println("An issue occured while reading the path", err)
 		return
 	}
-	outputPath = strings.TrimSuffix(inputPath, "\n")
-	outputPath = strings.TrimSuffix(inputPath, "\r")
-	fmt.Println(inputPath, outputPath)
+	outputPath = strings.TrimSuffix(outputPath, "\n")
+	outputPath = strings.TrimSuffix(outputPath, "\r")
 	validPath := regexp.MustCompile(`^(?:[\w]\:|\\)(\\[a-zA-Z_\-\s0-9\.]+)+\.(csv)`)
 	match := validPath.MatchString(inputPath)
+	if !match {
+		fmt.Println("The input path is invalid")
+		return
+	}
+
+	match = validPath.MatchString(outputPath)
 	if !match {
 		fmt.Println("The input path is invalid")
 		return
@@ -51,9 +57,9 @@ func main() {
 	}
 	defer file.Close()
 
-	products := make([]Product, 0, 20)
+	// products := make([]Product, 0, 20)
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		row := scanner.Text()
+		scanner.Text()
 	}
 }
