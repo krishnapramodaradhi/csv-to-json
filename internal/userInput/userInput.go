@@ -10,11 +10,11 @@ import (
 )
 
 func FetchData(reader *bufio.Reader) (inputPath, outputPath, fileName string, err error) {
-	inputPath, err = readUserInput("Path to the TSV file: ", reader)
+	inputPath, err = readUserInput("Path to the file: ", reader)
 	if err != nil {
 		return "", "", "", err
 	}
-	outputPath, err = readUserInput("Output Path: ", reader)
+	outputPath, err = readUserInput("Output Dir: ", reader)
 	if err != nil {
 		return "", "", "", err
 	}
