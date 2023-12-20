@@ -3,23 +3,23 @@ package main
 import (
 	"fmt"
 
-	csv_to_json "github.com/krishnapramodaradhi/csv-to-json"
+	csvToJson "github.com/krishnapramodaradhi/csv-to-json"
 )
 
 func main() {
-	csvToJson := csv_to_json.New()
-	err := csvToJson.GetUserInputData()
+	c2j := csvToJson.New()
+	err := c2j.GetUserInputData()
 	if err != nil {
 		fmt.Println("There was an error in getting the user input", err)
 		return
 	}
-	byteData, err := csvToJson.Process()
+	byteData, err := c2j.Process()
 	if err != nil {
 		fmt.Println("An error occured while processing the data", err)
 		return
 	}
 
-	err = csvToJson.WriteDataToFile(byteData)
+	err = c2j.WriteDataToFile(byteData)
 	if err != nil {
 		fmt.Println("An error occured while writing the file to fs", err)
 		return

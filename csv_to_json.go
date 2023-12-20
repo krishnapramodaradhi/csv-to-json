@@ -1,4 +1,4 @@
-package csv_to_json
+package csvToJson
 
 import (
 	"bufio"
@@ -8,13 +8,13 @@ import (
 	"strings"
 	"time"
 
-	userInput "github.com/krishnapramodaradhi/csv-to-json/internal/user_input"
+	userInput "github.com/krishnapramodaradhi/csv-to-json/internal/userInput"
 	"github.com/krishnapramodaradhi/csv-to-json/internal/util"
 )
 
-type outputDataType map[string]any
+type outputJson map[string]any
 
-type csvToJsonJob struct {
+type csvToJson struct {
 	inputPath      string
 	outputPath     string
 	fileName       string
@@ -22,7 +22,7 @@ type csvToJsonJob struct {
 	createdAt      time.Time
 }
 
-func (job *csvToJsonJob) GetUserInputData() error {
+func (c *csvToJson) GetUserInputData() error {
 	reader := bufio.NewReader(os.Stdin)
 	inputPath, outputPath, fileName, err := userInput.FetchData(reader)
 	if err != nil {
@@ -32,15 +32,15 @@ func (job *csvToJsonJob) GetUserInputData() error {
 	if err != nil {
 		return err
 	}
-	job.inputPath = inputPath
-	job.outputPath = outputPath
-	job.fileName = fileName
-	job.outputFilePath = job.outputPath + fileName + ".json"
+	c.inputPath = inputPath
+	c.outputPath = outputPath
+	c.fileName = fileName
+	c.outputFilePath = c.outputPath + fileName + ".json"
 	return nil
 }
 
-func (job *csvToJsonJob) Process() ([]byte, error) {
-	file, err := os.Open(job.inputPath)
+func (c *csvToJson) Process() ([]byte, error) {
+	file, err := os.Open(c.inputPath)
 	if err != nil {
 		return nil, err
 	}
@@ -58,26 +58,26 @@ func (job *csvToJsonJob) Process() ([]byte, error) {
 	return byteData, nil
 }
 
-func (job *csvToJsonJob) WriteDataToFile(data []byte) error {
-	if util.IsFileExists(job.outputFilePath) {
-		return fmt.Errorf("filepath %v already exists", job.outputFilePath)
+func (c *csvToJson) WriteDataToFile(data []byte) error {
+	if util.IsFileExists(c.outputFilePath) {
+		return fmt.Errorf("filepath %v already exists", c.outputFilePath)
 	}
-	err := os.WriteFile(job.outputFilePath, data, 0644)
+	err := os.WriteFile(c.outputFilePath, data, 0644)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func New() *csvToJsonJob {
-	return &csvToJsonJob{
+func New() *csvToJson {
+	return &csvToJson{
 		createdAt: time.Now(),
 	}
 }
 
-func prepareDataToConvert(scanner *bufio.Scanner) []outputDataType {
+func prepareDataToConvert(scanner *bufio.Scanner) []outputJson {
 	header := createHeaderList(scanner)
-	objects := make([]outputDataType, 0, 20)
+	objects := make([]outputJson, 0, 20)
 	for scanner.Scan() {
 		row := scanner.Text()
 		cells := strings.Split(row, "\t")
